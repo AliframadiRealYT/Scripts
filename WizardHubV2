@@ -1,0 +1,130 @@
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+local Window = Library:NewWindow("Wizard Hub V2")
+local Section = Window:NewSection("Main")
+
+local InfiniteJumpEnabled = false
+local JumpConnection
+
+Section:CreateButton("Infinite Jump", function()
+    InfiniteJumpEnabled = true
+    JumpConnection = game:GetService("UserInputService").JumpRequest:connect(function()
+        if InfiniteJumpEnabled then
+            game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+        end
+    end)
+end)
+
+Section:CreateButton("Normal Speed", function()
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+end)
+
+Section:CreateButton("High Speed", function()
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 500
+end)
+
+Section:CreateButton("God Mode", function()
+    local Player = game.Players.LocalPlayer
+    local Character = Player.Character
+    if Character then
+        local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+        if Humanoid then
+            Humanoid.MaxHealth = math.huge
+            Humanoid.Health = math.huge
+            Humanoid.Invulnerable = true
+            Humanoid:RemoveEvent("Humanoid.Died")
+        end
+    end
+end)
+
+local Section = Window:NewSection("Misc")
+
+Section:CreateButton("No Clip", function()
+    local Player = game.Players.LocalPlayer
+    local Character = Player.Character
+    local NoClipEnabled = false
+
+    local NoClipConnection = game:GetService("RunService").RenderStepped:connect(function()
+        if NoClipEnabled then
+            for _, Part in pairs(Character:GetDescendants()) do
+                if Part:IsA("BasePart") then
+                    Part.CanCollide = false
+                end
+            end
+        end
+    end)
+
+    NoClipEnabled = true
+end)
+Section:CreateButton("Reset Character", function()
+    local Player = game.Players.LocalPlayer
+    local Character = Player.Character
+    if Character then
+        Character:FindFirstChildOfClass("Humanoid"):Destroy()
+        wait(0.1)
+        Player:LoadCharacter()
+    end
+end)
+
+Section:CreateButton("ESP", function()
+    local Players = game:GetService("Players")
+    for _, Player in pairs(Players:GetPlayers()) do
+        if Player ~= game.Players.LocalPlayer then
+            local Character = Player.Character
+            if Character then
+                local Head = Character:FindFirstChild("Head")
+                if Head then
+                    local BillboardGui = Instance.new("BillboardGui")
+                    BillboardGui.Parent = Head
+                    BillboardGui.Adornee = Head
+                    BillboardGui.AlwaysOnTop = true
+                    BillboardGui.LightInfluence = 0
+                    BillboardGui.Size = UDim2.new(0, 100, 0, 50)
+                    local TextLabel = Instance.new("TextLabel")
+                    TextLabel.Parent = BillboardGui
+                    TextLabel.BackgroundTransparency = 1
+                    TextLabel.Size = UDim2.new(0, 100, 0, 50)
+                    TextLabel.Font = Enum.Font.SourceSansSemibold
+                    TextLabel.FontSize = Enum.FontSize.Size48
+                    TextLabel.TextColor3 = Color3.new(1, 1, 1)
+                    TextLabel.TextStrokeTransparency = 0
+                    TextLabel.Text = Player.Name
+                end
+            end
+        end
+    end
+end)
+
+Section:CreateButton("Jump Power", function()
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = 100
+end)
+
+Section:CreateButton("Low Gravity", function()
+game.Workspace.Gravity = 10
+end)
+
+local Section = Window:NewSection("Script")
+
+Section:CreateButton("Infinite Yield", function()
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'),true))()
+end)
+
+Section:CreateButton("Nameless Admin", function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))()
+end)
+
+local Section = Window:NewSection("Disable")
+
+Section:CreateButton("Disable Low Gravity", function()
+    game.Workspace.Gravity = 196.2
+end)
+
+Section:CreateButton("Disable Infinite Jump", function()
+    InfiniteJumpEnabled = false
+    if JumpConnection then
+        JumpConnection:Disconnect()
+    end
+end)
+
+Section:CreateButton("Disable Jump Power", function()
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+end)
